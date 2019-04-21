@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sender</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <h1>sender</h1>
+    <div>
+      <p>Your socketId is <strong id="socketId"></strong></p>
+    </div>
+    <div>
+      <video
+        id="localVideo"
+        playsinline
+        autoplay
+        width="300px"
+        muted></video>
+    <div>
+      <button id="startButton">Start</button>
+      <button id="hogeButton">Send hoge</button>
+      <button id="hangUpButton">Hang Up</button>
+    </div>
+    <div>
+      <h4>user list</h4>
+      <button id="reloadButton">
+        reload
+      </button>
+      <ul id="userList">
+      </ul>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
