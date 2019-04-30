@@ -44,6 +44,14 @@ const handleAnswerFromReceiver = (socket, data) => {
   );
 }
 
+const handleIceCandidate = (socket, data) => {
+  const { candidate, calleeId } = data;
+  socket.to(calleeId).emit(
+    "new-ice-candidate",
+    candidate
+  );
+}
+
 io.on("connection", socket => {
   console.log('new user connected');
   addUser(socket);
@@ -63,4 +71,8 @@ io.on("connection", socket => {
   socket.on('answerFromReceiver', data => {
     handleAnswerFromReceiver(socket, data);
   });
+
+  socket.on('new-ice-candidate', data => {
+    handleIceCandidate(socket, data)
+  })
 });

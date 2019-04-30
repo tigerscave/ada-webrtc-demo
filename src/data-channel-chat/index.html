@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Data Channel Chat</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <h1>Data Channel Chat example</h1>
+    <div>
+      <p>Your socketId is</p>
+      <p><strong id="socketId"></strong></p>
+    </div>
+    <div>
+      <button id="hogeButton">Send hoge</button>
+      <button id="hangUpButton">Hang Up</button>
+    </div>
+    <div>
+      <input id="targetId"/>
+      <button id="callButton">Call</button>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
