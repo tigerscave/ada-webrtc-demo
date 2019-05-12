@@ -14,6 +14,18 @@ const handleOnDataChannel = event => {
   channel.addEventListener("message", handleMessageReceived);
 };
 
+const handleIceConnectionStateChange = event => {
+  console.warn("iceconnectionstatechange fired")
+  console.log("iceConnectionState:", pc.iceConnectionState);
+  console.log("connectionState:", pc.connectionState);
+}
+
+const handleSignalingStateChangeEvent = () => {
+  console.warn("signalingstatechange fired")
+  console.log("signalingState:", pc.signalingState)
+  console.log("connectionState:", pc.connectionState);
+}
+
 const handleOnTrackConnection = (event) => {
   console.log("---handleOnTrackConnection---");
   console.log(event)
@@ -21,12 +33,23 @@ const handleOnTrackConnection = (event) => {
   document.getElementById("remoteVideo").srcObject = event.streams[0];
 }
 
+const handleConnectionChange = (event) => {
+  console.warn("connectionstatechange fired")
+  console.log("signalingState:", pc.signalingState)
+  console.log("connectionState:", pc.connectionState);
+}
+
+pc.addEventListener('iceconnectionstatechange', handleIceConnectionStateChange)
+pc.addEventListener('signalingstatechange', handleSignalingStateChangeEvent)
+pc.addEventListener('connectionstatechange', handleConnectionChange)
+
 const createdAnswer = (senderId, description) => {
   console.log("---createdAnswer---");
   pc.addEventListener(
     "icecandidate",
     handleOnIceCandidate
   );
+
   pc.setLocalDescription(description).then(() => {
     pc.addEventListener('track', handleOnTrackConnection);
     pc.addEventListener("datachannel", handleOnDataChannel);
