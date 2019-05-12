@@ -62,3 +62,13 @@ socket.on('offerToReceiver', data => {
       .then(description => createdAnswer(senderId, description));
   });
 })
+
+const handleNewICECandidate = data => {
+  console.log("---handleNewICECandidate---")
+  const candidate = new RTCIceCandidate(data);
+  pc.addIceCandidate(candidate);
+};
+
+socket.on('new-ice-candidate', candidate => {
+  handleNewICECandidate(candidate)
+});

@@ -5,11 +5,46 @@ const socket = io();
 let localStream = null;
 let pc = null;    //peer connection
 let sendChannel = null;    //for WebRTC data channel
+let calleeId = "";
 
 const offerOptions = {
   offerToReceiveAudio: 1,
   offerToReceiveVideo: 1
 };
+
+const handleNegotiationNeededEvent = () => {
+  console.warn("negotiationneeded fired")
+  pc.createOffer(offerOptions)
+  .then((description) => createOfferSuccess(calleeId, description))
+}
+
+const handleIceConnectionStateChange = event => {
+  console.warn("iceconnectionstatechange fired")
+  console.log("iceConnectionState:", pc.iceConnectionState);
+  console.log("connectionState:", pc.connectionState);
+}
+
+const handleSignalingStateChangeEvent = () => {
+  console.warn("signalingstatechange fired")
+  console.log("signalingState:", pc.signalingState)
+  console.log("connectionState:", pc.connectionState);
+}
+
+const createPeerConnection = () => {
+  pc = new RTCPeerConnection();
+  console.warn("createPeerConnection")
+  console.log("connectionState:", pc.connectionState);
+  console.log(pc.getSenders())
+
+  // this event is called when iceConnectionState changed
+  pc.addEventListener('iceconnectionstatechange', handleIceConnectionStateChange)
+
+  pc.addEventListener('negotiationneeded', handleNegotiationNeededEvent)
+
+  pc.addEventListener('signalingstatechange', handleSignalingStateChangeEvent)
+
+  pc.addEventListener("icecandidate", handleOnIceCandidate);
+}
 
 const userList = document.getElementById("userList");
 
@@ -18,10 +53,6 @@ const userList = document.getElementById("userList");
 const gotLocalMediaStream = mediaStream => {
   localVideo.srcObject = mediaStream;
   localStream = mediaStream;
-
-  pc = new RTCPeerConnection();
-  sendChannel = pc.createDataChannel("dataChannel", null);
-  
 }
 
 const handleLocalMediaStreamError = () => {
@@ -40,10 +71,12 @@ const onStartButtonPressed = () => {
 
 const handleOnIceCandidate = (event) => {
   const { candidate } = event;
+
   if(candidate) {
-    console.log("---handleOnIceCandidate---")
-    const newIceCandidate = new RTCIceCandidate(candidate);
-    pc.addIceCandidate(newIceCandidate);
+    socket.emit("new-ice-candidate", {
+      calleeId,
+      candidate
+    })
   }
 }
 
@@ -59,10 +92,19 @@ const createOfferSuccess = (targetId, description) => {
 }
 
 const onCallButtonClicked = (targetId) => {
-  console.log(targetId)
-  
+  calleeId = targetId;
+  createPeerConnection();
+
   pc.createOffer(offerOptions)
-  .then((description) => createOfferSuccess(targetId, description))
+  .then((description) => createOfferSuccess(calleeId, description))
+
+  //localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+  // this fires negotiationneeded event
+  //sendChannel = pc.createDataChannel("dataChannel", null);
+  //localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+
+  // pc.createOffer(offerOptions)
+  // .then((description) => createOfferSuccess(targetId, description))
 }
 
 /* --- hang up button related --- */
@@ -85,6 +127,10 @@ const onHogeButtonClicked = () => {
   sendChannel.send("HOGE");
 }
 
+const onSendStreamButtonClicked = () => {
+  localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+}
+
 
 /* --- event listeners --- */
 
@@ -99,6 +145,9 @@ reloadButton.addEventListener('click', onReloadButtonClicked);
 
 const hogeButton = document.getElementById("hogeButton");
 hogeButton.addEventListener('click', onHogeButtonClicked)
+
+const sendStreamButton = document.getElementById("sendStream");
+sendStreamButton.addEventListener('click', onSendStreamButtonClicked);
 
 /* --- socket listeners --- */
 socket.on('connect', () => {
@@ -131,7 +180,14 @@ socket.on("answerToSender", description => {
     handleOnIceCandidate
   );
   pc.setRemoteDescription(description).then(() => {
-    localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+    console.warn("---setRemoteDescription---")
+    console.log(pc)
+    console.log(pc.getSenders())
+    console.log(pc.signalingState)
+    //localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+    //if(pc.getSenders().length === 0) {
+      //localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+    //}
     console.log("pc connectionState", pc.connectionState);
   })
 })
