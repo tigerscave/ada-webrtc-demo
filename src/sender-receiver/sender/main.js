@@ -51,6 +51,7 @@ const userList = document.getElementById("userList");
 /* --- start button related --- */
 
 const gotLocalMediaStream = mediaStream => {
+  console.log(mediaStream)
   localVideo.srcObject = mediaStream;
   localStream = mediaStream;
 }
@@ -59,8 +60,43 @@ const handleLocalMediaStreamError = () => {
   alert("Error. Can not load media stream.")
 }
 
+const displayDeviceList = devices => {
+  const deviceListEl = document.getElementById("deviceList");
+  while (deviceListEl.firstChild) {
+    deviceListEl.removeChild(deviceListEl.firstChild);
+  }
+  devices.map(device => {
+    const listNode = document.createElement("LI");
+    const textNode = document.createTextNode(device.label);
+    listNode.appendChild(textNode);
+
+    // add call button to each user
+    const buttonNode = document.createElement("BUTTON");
+    buttonNode.appendChild(document.createTextNode("STREAM VIDEO"));
+    listNode.appendChild(buttonNode);
+
+    deviceListEl.appendChild(listNode);
+  })
+}
+
+const onDeviceListButtonClicked = () => {
+  const videoDevices = [];
+  navigator.mediaDevices.enumerateDevices()
+  .then((devices) => {
+    console.log(devices)
+    devices.forEach(device => {
+      if(device.kind === 'videoinput') {
+        videoDevices.push(device);
+      }
+    })
+    console.log(videoDevices)
+    displayDeviceList(videoDevices)
+  })
+}
+
 const onStartButtonPressed = () => {
   console.log("---startButtonPressed---")
+  console.log(navigator.mediaDevices)
   navigator.mediaDevices.getUserMedia({audio: false, video: true})
   .then(gotLocalMediaStream)
   .catch(handleLocalMediaStreamError)
@@ -136,6 +172,9 @@ const onSendStreamButtonClicked = () => {
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', onStartButtonPressed);
+
+const deviceList = document.getElementById('deviceListButton');
+deviceList.addEventListener('click', onDeviceListButtonClicked)
 
 const hangUpButton = document.getElementById('hangUpButton');
 hangUpButton.addEventListener('click', hanldeOnHangUpButtonClicked);
