@@ -20,6 +20,24 @@ const handleIceConnectionStateChange = event => {
   console.log("connectionState:", pc.connectionState);
 }
 
+const showRemoteVideos = streams => {
+  streams.forEach((stream, index) => {
+    if(index < 3) {
+      const videoEl = document.getElementById(`remoteVideo${index+1}`);
+      videoEl.srcObject = stream;
+      videoEl.addEventListener('enterpictureinpicture', (event) => {
+        // Video entered Picture-in-Picture mode.
+        console.log("hello PIP")
+        console.log(event)
+        let pipWindow = event.pictureInPictureWindow;
+        console.log(pipWindow)
+        pipWindow.width = 2000;
+        pipWindow.addEventListener('resize', onPipWindowResize)
+      });
+    }
+  })
+}
+
 const handleSignalingStateChangeEvent = () => {
   console.warn("signalingstatechange fired")
   console.log("signalingState:", pc.signalingState)
@@ -27,14 +45,17 @@ const handleSignalingStateChangeEvent = () => {
   console.log(pc.getRemoteStreams())
   console.log(pc.getRemoteStreams()[0].getVideoTracks())
   console.log(pc.getRemoteStreams()[0].getVideoTracks()[0].getSettings())
+  if(pc.getRemoteStreams().length > 0) {
+    showRemoteVideos(pc.getRemoteStreams())
+  }
 }
 
 const handleOnTrackConnection = (event) => {
-  console.log("---handleOnTrackConnection---");
+  console.warn("---handleOnTrackConnection---");
   console.log(event)
-  console.log(event.streams[0].getTracks())
-  document.getElementById("remoteVideo").srcObject = event.streams[0];
+  console.log(event.streams)
 }
+  
 
 const handleConnectionChange = (event) => {
   console.warn("connectionstatechange fired")
