@@ -52,7 +52,7 @@ const userList = document.getElementById("userList");
 
 const gotLocalMediaStream = mediaStream => {
   console.log(mediaStream)
-  localVideo.srcObject = mediaStream;
+  document.getElementById("localVideo1").srcObject = mediaStream;
   localStream = mediaStream;
 }
 
@@ -60,12 +60,27 @@ const handleLocalMediaStreamError = () => {
   alert("Error. Can not load media stream.")
 }
 
+const gotLocalVideoStream = (mediaStream, videoEl) => {
+  videoEl.srcObject = mediaStream;
+  mediaStream.getTracks().forEach(track => pc.addTrack(track, mediaStream));
+}
+
+const onStreamVideoButtonClicked = (deviceId, index) => {
+  const videoEl = document.getElementById(`localVideo${index+1}`);
+  navigator.mediaDevices.getUserMedia(
+    {
+      audio: false,
+      video: {deviceId}}
+  )
+  .then((mediaStream) => gotLocalVideoStream(mediaStream, videoEl))
+}
+
 const displayDeviceList = devices => {
   const deviceListEl = document.getElementById("deviceList");
   while (deviceListEl.firstChild) {
     deviceListEl.removeChild(deviceListEl.firstChild);
   }
-  devices.map(device => {
+  devices.forEach((device, index) => {
     const listNode = document.createElement("LI");
     const textNode = document.createTextNode(device.label);
     listNode.appendChild(textNode);
@@ -73,6 +88,8 @@ const displayDeviceList = devices => {
     // add call button to each user
     const buttonNode = document.createElement("BUTTON");
     buttonNode.appendChild(document.createTextNode("STREAM VIDEO"));
+    buttonNode.value = device.deviceId;
+    buttonNode.addEventListener("click", () => onStreamVideoButtonClicked(device.deviceId, index));
     listNode.appendChild(buttonNode);
 
     deviceListEl.appendChild(listNode);
@@ -84,7 +101,7 @@ const onDeviceListButtonClicked = () => {
   navigator.mediaDevices.enumerateDevices()
   .then((devices) => {
     console.log(devices)
-    devices.forEach(device => {
+    devices.forEach((device) => {
       if(device.kind === 'videoinput') {
         videoDevices.push(device);
       }
@@ -97,7 +114,11 @@ const onDeviceListButtonClicked = () => {
 const onStartButtonPressed = () => {
   console.log("---startButtonPressed---")
   console.log(navigator.mediaDevices)
-  navigator.mediaDevices.getUserMedia({audio: false, video: true})
+  navigator.mediaDevices.getUserMedia(
+    {
+      audio: false,
+      video: true}
+  )
   .then(gotLocalMediaStream)
   .catch(handleLocalMediaStreamError)
 }

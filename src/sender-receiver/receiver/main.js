@@ -24,6 +24,9 @@ const handleSignalingStateChangeEvent = () => {
   console.warn("signalingstatechange fired")
   console.log("signalingState:", pc.signalingState)
   console.log("connectionState:", pc.connectionState);
+  console.log(pc.getRemoteStreams())
+  console.log(pc.getRemoteStreams()[0].getVideoTracks())
+  console.log(pc.getRemoteStreams()[0].getVideoTracks()[0].getSettings())
 }
 
 const handleOnTrackConnection = (event) => {
