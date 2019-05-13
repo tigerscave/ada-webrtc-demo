@@ -25,15 +25,6 @@ const showRemoteVideos = streams => {
     if(index < 3) {
       const videoEl = document.getElementById(`remoteVideo${index+1}`);
       videoEl.srcObject = stream;
-      videoEl.addEventListener('enterpictureinpicture', (event) => {
-        // Video entered Picture-in-Picture mode.
-        console.log("hello PIP")
-        console.log(event)
-        let pipWindow = event.pictureInPictureWindow;
-        console.log(pipWindow)
-        pipWindow.width = 2000;
-        pipWindow.addEventListener('resize', onPipWindowResize)
-      });
     }
   })
 }
