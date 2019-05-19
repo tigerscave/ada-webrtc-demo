@@ -28,18 +28,7 @@
         autoplay
         width="300px"
         muted></video>
-    <div>
-      <button id="startButton">Start</button>
-      <button id="deviceListButton">Device List</button>
-      <button id="hogeButton">Send hoge</button>
-      <button id="sendStream">Send stream</button>
-      <button id="hangUpButton">Hang Up</button>
-    </div>
-    <div>
-      <h4>device list</h4>
-      <ul id="deviceList">
-      </ul>
-    </div>
+    
     <div>
       <h4>user list</h4>
       <button id="reloadButton">
@@ -47,6 +36,15 @@
       </button>
       <ul id="userList">
       </ul>
+    </div>
+    <div id="videoDevices">
+      <h4>device list</h4>
+      <ul id="deviceList">
+      </ul>
+      <div>
+        <button id="hogeButton">Send hoge</button>
+        <button id="hangUpButton">Hang Up</button>
+      </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="main.js"></script>

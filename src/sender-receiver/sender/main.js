@@ -6,6 +6,7 @@ let localStream = null;
 let pc = null;    //peer connection
 let sendChannel = null;    //for WebRTC data channel
 let calleeId = "";
+let shouldDeviceListShown = false;
 
 const offerOptions = {
   offerToReceiveAudio: 1,
@@ -22,6 +23,9 @@ const handleIceConnectionStateChange = event => {
   console.warn("iceconnectionstatechange fired")
   console.log("iceConnectionState:", pc.iceConnectionState);
   console.log("connectionState:", pc.connectionState);
+  if(pc.connectionState === 'connected') {
+    document.getElementById('videoDevices').style.display = "unset";
+  }
 }
 
 const handleSignalingStateChangeEvent = () => {
@@ -96,7 +100,7 @@ const displayDeviceList = devices => {
   })
 }
 
-const onDeviceListButtonClicked = () => {
+const loadVideoDevices = () => {
   const videoDevices = [];
   navigator.mediaDevices.enumerateDevices()
   .then((devices) => {
@@ -109,18 +113,6 @@ const onDeviceListButtonClicked = () => {
     console.log(videoDevices)
     displayDeviceList(videoDevices)
   })
-}
-
-const onStartButtonPressed = () => {
-  console.log("---startButtonPressed---")
-  console.log(navigator.mediaDevices)
-  navigator.mediaDevices.getUserMedia(
-    {
-      audio: false,
-      video: true}
-  )
-  .then(gotLocalMediaStream)
-  .catch(handleLocalMediaStreamError)
 }
 
 
@@ -184,18 +176,10 @@ const onHogeButtonClicked = () => {
   sendChannel.send("HOGE");
 }
 
-const onSendStreamButtonClicked = () => {
-  localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-}
-
+loadVideoDevices();
+document.getElementById('videoDevices').style.display = "none";
 
 /* --- event listeners --- */
-
-const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', onStartButtonPressed);
-
-const deviceList = document.getElementById('deviceListButton');
-deviceList.addEventListener('click', onDeviceListButtonClicked)
 
 const hangUpButton = document.getElementById('hangUpButton');
 hangUpButton.addEventListener('click', hanldeOnHangUpButtonClicked);
@@ -205,9 +189,6 @@ reloadButton.addEventListener('click', onReloadButtonClicked);
 
 const hogeButton = document.getElementById("hogeButton");
 hogeButton.addEventListener('click', onHogeButtonClicked)
-
-const sendStreamButton = document.getElementById("sendStream");
-sendStreamButton.addEventListener('click', onSendStreamButtonClicked);
 
 /* --- socket listeners --- */
 socket.on('connect', () => {
