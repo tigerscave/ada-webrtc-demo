@@ -7,6 +7,12 @@ let pc = new RTCPeerConnection();    //peer connection
 const handleMessageReceived = event => {
   const { data } = event;
   console.log("data from sender :", data);
+  const parsedData = JSON.parse(data);
+  if(parsedData.joystickLY) {
+    socket.emit("joystickLY", parsedData.joystickLY);
+  } else if (parsedData.joystickRY) {
+    socket.emit("joystickRY", parsedData.joystickRY);
+  }
 };
 
 const handleOnDataChannel = event => {

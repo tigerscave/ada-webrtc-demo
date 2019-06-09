@@ -23,7 +23,7 @@ const handleIceConnectionStateChange = event => {
   console.warn("iceconnectionstatechange fired")
   console.log("iceConnectionState:", pc.iceConnectionState);
   console.log("connectionState:", pc.connectionState);
-  if(pc.connectionState === 'connected') {
+  if(pc.iceConnectionState === 'connected') {
     document.getElementById('videoDevices').style.display = "unset";
   }
 }
