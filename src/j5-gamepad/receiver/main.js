@@ -3,16 +3,11 @@
 const socket = io();
 
 let pc = new RTCPeerConnection();    //peer connection
+let sendChannel = null;    //for WebRTC data channel
 
 const handleMessageReceived = event => {
   const { data } = event;
   console.log("data from sender :", data);
-  const parsedData = JSON.parse(data);
-  if(parsedData.joystickLY) {
-    socket.emit("joystickLY", parsedData.joystickLY);
-  } else if (parsedData.joystickRY) {
-    socket.emit("joystickRY", parsedData.joystickRY);
-  }
 };
 
 const handleOnDataChannel = event => {
@@ -66,6 +61,7 @@ pc.addEventListener('connectionstatechange', handleConnectionChange)
 
 const createdAnswer = (senderId, description) => {
   console.log("---createdAnswer---");
+  sendChannel = pc.createDataChannel("dataChannel", null);
   pc.addEventListener(
     "icecandidate",
     handleOnIceCandidate

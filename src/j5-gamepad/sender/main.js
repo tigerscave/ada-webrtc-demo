@@ -13,6 +13,22 @@ const offerOptions = {
   offerToReceiveVideo: 1
 };
 
+const handleMessageReceived = event => {
+  const { data } = event;
+  console.log("data from sender :", data);
+  const parsedData = JSON.parse(data);
+  if(parsedData.joystickLY) {
+    socket.emit("joystickLY", parsedData.joystickLY);
+  } else if (parsedData.joystickRY) {
+    socket.emit("joystickRY", parsedData.joystickRY);
+  }
+};
+
+const handleOnDataChannel = event => {
+  const { channel } = event;
+  channel.addEventListener("message", handleMessageReceived);
+};
+
 const handleNegotiationNeededEvent = () => {
   console.warn("negotiationneeded fired")
   pc.createOffer(offerOptions)
@@ -48,6 +64,8 @@ const createPeerConnection = () => {
   pc.addEventListener('signalingstatechange', handleSignalingStateChangeEvent)
 
   pc.addEventListener("icecandidate", handleOnIceCandidate);
+
+  pc.addEventListener("datachannel", handleOnDataChannel);
 }
 
 const userList = document.getElementById("userList");
