@@ -19,6 +19,7 @@
   "homepage": "https://github.com/tigerscave/ada-webrtc-demo#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "johnny-five": "^1.1.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sender</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <h1>sender</h1>
+    <div>
+      <p>Your socketId is <strong id="socketId"></strong></p>
+    </div>
+    <div>
+      <video
+        id="localVideo1"
+        playsinline
+        autoplay
+        width="300px"
+        muted></video>
+      <video
+        id="localVideo2"
+        playsinline
+        autoplay
+        width="300px"
+        muted></video>
+      <video
+        id="localVideo3"
+        playsinline
+        autoplay
+        width="300px"
+        muted></video>
+    
+    <div>
+      <h4>user list</h4>
+      <button id="reloadButton">
+        reload
+      </button>
+      <ul id="userList">
+      </ul>
+    </div>
+    <div id="videoDevices">
+      <h4>device list</h4>
+      <ul id="deviceList">
+      </ul>
+      <div>
+        <button id="hogeButton">Send hoge</button>
+        <button id="hangUpButton">Hang Up</button>
+        <button id="vibrationButton">Vibration</button>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+    <script src="gamePadController.js"></script>
+  </body>
+</html>

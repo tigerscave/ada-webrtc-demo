@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Window 2</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <h1>Window 2</h1>
+    <div>
+      <button id="button">BUTTON</button>
+    </div>
+    <div class="videoContainer">
+      <video
+        id="subVideo"
+        class="subVideo"
+        playsinline
+        autoplay
+        muted></video>
+    </div>
+    
+    <script>
+      const button = document.getElementById('button');
+      button.addEventListener('click', () => {
+        const remoteVideo = window.opener.document.getElementById('remoteVideo2');
+        document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
+      })
+    </script>
+  </body>
+</html>
