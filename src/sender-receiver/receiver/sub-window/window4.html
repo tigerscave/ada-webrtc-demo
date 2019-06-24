@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Window 2</title>
+    <title>Window 4</title>
     <link rel="stylesheet" href="main.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.min.js"></script>
   </head>
   <body>
-    <h1>Window 2</h1>
+    <h1>Window 4</h1>
     <div>
       <button id="button">BUTTON</button>
       <button id="vrButton">VR</button>
@@ -24,7 +24,7 @@
     <script>
       const button = document.getElementById('button');
       button.addEventListener('click', () => {
-        const remoteVideo = window.opener.document.getElementById('remoteVideo2');
+        const remoteVideo = window.opener.document.getElementById('remoteVideo4');
         document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
       })
     </script>

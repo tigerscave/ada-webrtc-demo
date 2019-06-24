@@ -3,13 +3,15 @@
   <head>
     <title>Window 3</title>
     <link rel="stylesheet" href="main.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.min.js"></script>
   </head>
   <body>
     <h1>Window 3</h1>
     <div>
       <button id="button">BUTTON</button>
+      <button id="vrButton">VR</button>
     </div>
-    <div class="videoContainer">
+    <div id="videoContainer" class="video-container">
       <video
         id="subVideo"
         class="subVideo"
@@ -17,6 +19,7 @@
         autoplay
         muted></video>
     </div>
+    <div id="container"></div>
     
     <script>
       const button = document.getElementById('button');
@@ -25,5 +28,6 @@
         document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
       })
     </script>
+    <script type="text/javascript" src="./panorama.js"></script>
   </body>
 </html>

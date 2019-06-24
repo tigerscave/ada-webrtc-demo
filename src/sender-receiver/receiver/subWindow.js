@@ -14,3 +14,13 @@ const subWindow3Button = document.getElementById('subWindow3Button');
 subWindow3Button.addEventListener('click', () => {
   window.open("sub-window/window3.html", "window3", "width=600,height=600,scrollbars=yes");
 })
+
+const subWindow4Button = document.getElementById('subWindow4Button');
+subWindow4Button.addEventListener('click', () => {
+  window.open("sub-window/window4.html", "window4", "width=600,height=600,scrollbars=yes");
+})
+
+const subWindow5Button = document.getElementById('subWindow5Button');
+subWindow5Button.addEventListener('click', () => {
+  window.open("sub-window/window5.html", "window5", "width=600,height=600,scrollbars=yes");
+})

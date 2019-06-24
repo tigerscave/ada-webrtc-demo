@@ -76,7 +76,6 @@ const onStreamVideoButtonClicked = (deviceId, index) => {
       audio: false,
       video: {
         deviceId,
-        width: { min: 600, ideal: 900, max: 1200 },
       }}
   )
   .then((mediaStream) => gotLocalVideoStream(mediaStream, videoEl))
