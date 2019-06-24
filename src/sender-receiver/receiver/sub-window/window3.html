@@ -19,15 +19,12 @@
         autoplay
         muted></video>
     </div>
-    <div id="container"></div>
+    <div id="vrVideoContainers" style="display: flex">
+      <div id="container"></div>
+      <div id="container2"></div>
+    </div>
     
-    <script>
-      const button = document.getElementById('button');
-      button.addEventListener('click', () => {
-        const remoteVideo = window.opener.document.getElementById('remoteVideo3');
-        document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
-      })
-    </script>
+    <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript" src="./panorama.js"></script>
   </body>
 </html>
