@@ -14,15 +14,15 @@ const certificateOptions = {
 const server = https.createServer(certificateOptions, app)
 
 const io = require("socket.io")(server);
-var five = require("johnny-five");
-const board = new five.Board();
+//var five = require("johnny-five");
+//const board = new five.Board();
 
 const STOP_THRESHOLD = 0.2;
 
 const main = () => {
-  var configs = five.Motor.SHIELD_CONFIGS.SEEED_STUDIO;
-  var leftMotor = new five.Motor(configs.B);
-  var rightMotor = new five.Motor(configs.A);
+  // var configs = five.Motor.SHIELD_CONFIGS.SEEED_STUDIO;
+  // var leftMotor = new five.Motor(configs.B);
+  // var rightMotor = new five.Motor(configs.A);
 
   server.listen(PORT, () => {
     console.log("listening on PORT :", PORT);
@@ -67,6 +67,10 @@ const main = () => {
       "new-ice-candidate",
       candidate
     );
+  }
+
+  const handleRefreshOffer = (socket, id) => {
+    socket.to(id).emit("refreshPeerConnection")
   }
 
   const convert = x => {
@@ -125,12 +129,18 @@ const main = () => {
       handleIceCandidate(socket, data)
     })
 
+    socket.on('refreshOffer', id => {
+      handleRefreshOffer(socket, id)
+    })
+
     socket.on("joystickLY", data => handleJoyStickLY(data))
     socket.on("joystickRY", data => handleJoyStickRY(data))
 
   });
 }
 
-board.on("ready", () => {
-  main();
-});
+main();
+
+// board.on("ready", () => {
+//   main();
+// });

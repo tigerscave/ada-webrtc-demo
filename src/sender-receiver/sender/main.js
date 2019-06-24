@@ -23,7 +23,7 @@ const handleIceConnectionStateChange = event => {
   console.warn("iceconnectionstatechange fired")
   console.log("iceConnectionState:", pc.iceConnectionState);
   console.log("connectionState:", pc.connectionState);
-  if(pc.connectionState === 'connected') {
+  if(pc.iceConnectionState === 'connected') {
     document.getElementById('videoDevices').style.display = "unset";
   }
 }
@@ -74,7 +74,10 @@ const onStreamVideoButtonClicked = (deviceId, index) => {
   navigator.mediaDevices.getUserMedia(
     {
       audio: false,
-      video: {deviceId}}
+      video: {
+        deviceId,
+        width: { min: 600, ideal: 900, max: 1200 },
+      }}
   )
   .then((mediaStream) => gotLocalVideoStream(mediaStream, videoEl))
 }
@@ -176,8 +179,13 @@ const onHogeButtonClicked = () => {
   sendChannel.send("HOGE");
 }
 
+const onRefreshButtonClicked = () => {
+  socket.emit("refreshOffer", calleeId);
+  window.location.reload();
+}
+
 loadVideoDevices();
-document.getElementById('videoDevices').style.display = "none";
+//document.getElementById('videoDevices').style.display = "none";
 
 /* --- event listeners --- */
 
@@ -188,7 +196,10 @@ const reloadButton = document.getElementById("reloadButton");
 reloadButton.addEventListener('click', onReloadButtonClicked);
 
 const hogeButton = document.getElementById("hogeButton");
-hogeButton.addEventListener('click', onHogeButtonClicked)
+hogeButton.addEventListener('click', onHogeButtonClicked);
+
+const refreshButton = document.getElementById("refreshButton");
+refreshButton.addEventListener('click', onRefreshButtonClicked);
 
 /* --- socket listeners --- */
 socket.on('connect', () => {

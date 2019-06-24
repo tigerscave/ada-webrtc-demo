@@ -22,7 +22,7 @@ const handleIceConnectionStateChange = event => {
 
 const showRemoteVideos = streams => {
   streams.forEach((stream, index) => {
-    if(index < 3) {
+    if(index < 6) {
       const videoEl = document.getElementById(`remoteVideo${index+1}`);
       videoEl.srcObject = stream;
     }
@@ -52,6 +52,10 @@ const handleConnectionChange = (event) => {
   console.warn("connectionstatechange fired")
   console.log("signalingState:", pc.signalingState)
   console.log("connectionState:", pc.connectionState);
+
+  if(pc.connectionState === 'disconnected') {
+    window.location.reload();
+  }
 }
 
 pc.addEventListener('iceconnectionstatechange', handleIceConnectionStateChange)
@@ -100,6 +104,10 @@ socket.on('offerToReceiver', data => {
       .then(description => createdAnswer(senderId, description));
   });
 })
+
+socket.on('refreshPeerConnection', () => {
+  window.location.reload();
+});
 
 const handleNewICECandidate = data => {
   console.log("---handleNewICECandidate---")
