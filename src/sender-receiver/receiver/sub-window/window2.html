@@ -3,7 +3,7 @@
   <head>
     <title>Window 2</title>
     <link rel="stylesheet" href="main.css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.min.js"></script>
+    <script type="text/javascript" src="../../libs/three.js"></script>
   </head>
   <body>
     <h1>Window 2</h1>
@@ -24,7 +24,14 @@
       <div id="container2"></div>
     </div>
     
-    <script type="text/javascript" src="./main.js"></script>
+    <script type="text/javascript">
+      const button = document.getElementById('button');
+      button.addEventListener('click', () => {
+        const remoteVideo = window.opener.document.getElementById('remoteVideo2');
+        document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
+        document.getElementById("videoContainer").style.display = 'unset';
+      })
+    </script>
     <script type="text/javascript" src="./panorama.js"></script>
   </body>
 </html>

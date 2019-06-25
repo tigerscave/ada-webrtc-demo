@@ -1,14 +1,18 @@
 'use strict';
 
 const init = () => {
-  var container, mesh, container2;
+  var container, mesh, container2, container3;
   container = document.getElementById( 'container' );
   container2 = document.getElementById( 'container2' );
+  container3 = document.getElementById( 'container3' );
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
   camera.target = new THREE.Vector3( 0, 0, 0 );
   
   camera2 = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
   camera2.target = new THREE.Vector3( 0, 0, 0 );
+
+  camera3 = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
+  camera3.target = new THREE.Vector3( 0, 0, 0 );
 
   scene = new THREE.Scene();
   var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
@@ -28,11 +32,27 @@ const init = () => {
   renderer2.setPixelRatio( window.devicePixelRatio );
   renderer2.setSize( window.innerWidth / 2, window.innerHeight / 2 );
 
+  renderer3 = new THREE.WebGLRenderer();
+  renderer3.setPixelRatio( window.devicePixelRatio );
+  renderer3.setSize( window.innerWidth / 2, window.innerHeight / 2 );
+
   container.appendChild( renderer.domElement );
+  container.addEventListener( 'mousedown', onDocumentMouseDown, false );
+  container.addEventListener( 'mousemove', onDocumentMouseMove, false );
+  container.addEventListener( 'mouseup', onDocumentMouseUp, false );
+  container.addEventListener( 'mouseleave', onDocumentMouseUp, false );
+
   container2.appendChild( renderer2.domElement );
-  document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-  document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-  document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+  container2.addEventListener( 'mousedown', onDocumentMouseDown2, false );
+  container2.addEventListener( 'mousemove', onDocumentMouseMove2, false );
+  container2.addEventListener( 'mouseup', onDocumentMouseUp2, false );
+  container2.addEventListener( 'mouseleave', onDocumentMouseUp2, false );
+
+  container3.appendChild( renderer3.domElement );
+  container3.addEventListener( 'mousedown', onDocumentMouseDown3, false );
+  container3.addEventListener( 'mousemove', onDocumentMouseMove3, false );
+  container3.addEventListener( 'mouseup', onDocumentMouseUp3, false );
+  container3.addEventListener( 'mouseleave', onDocumentMouseUp3, false );
 
   window.addEventListener( 'resize', onWindowResize, false );
 }
@@ -43,26 +63,36 @@ const animate = () => {
 }
 
 const update = () => {
-  let l = Math.max( - 85, Math.min( 85, 0 ) );
-  phi = THREE.Math.degToRad( 90 - 0 );
-  theta = THREE.Math.degToRad( 0 );
+  lat = Math.max( - 85, Math.min( 85, lat ) );
+  phi = THREE.Math.degToRad( 90 - lat );
+  theta = THREE.Math.degToRad( lon );
   camera.position.x = distance * Math.sin( phi ) * Math.cos( theta );
   camera.position.y = distance * Math.cos( phi );
   camera.position.z = distance * Math.sin( phi ) * Math.sin( theta );
   camera.lookAt( camera.target );
 
-
-  lat = Math.max( - 85, Math.min( 85, lat ) );
-  phi2 = THREE.Math.degToRad( 90 - lat );
-  theta2= THREE.Math.degToRad( lon );
+  lat2 = Math.max( - 85, Math.min( 85, lat2 ) );
+  phi2 = THREE.Math.degToRad( 90 - lat2 );
+  theta2= THREE.Math.degToRad( lon2 );
 
   camera2.position.x = distance * Math.sin( phi2 ) * Math.cos( theta2 );
   camera2.position.y = distance * Math.cos( phi2 );
   camera2.position.z = distance * Math.sin( phi2 ) * Math.sin( theta2 );
   camera2.lookAt( camera2.target );
 
+  lat3 = Math.max( - 85, Math.min( 85, lat3 ) );
+  phi3 = THREE.Math.degToRad( 90 - lat3 );
+  theta3= THREE.Math.degToRad( lon3 );
+
+  camera3.position.x = distance * Math.sin( phi3 ) * Math.cos( theta3 );
+  camera3.position.y = distance * Math.cos( phi3 );
+  camera3.position.z = distance * Math.sin( phi3 ) * Math.sin( theta3 );
+  camera3.lookAt( camera3.target );
+
   renderer.render( scene, camera );
   renderer2.render( scene, camera2 );
+  renderer3.render( scene, camera3 );
+
 }
 
 const onWindowResize = () => {
@@ -72,15 +102,26 @@ const onWindowResize = () => {
   camera2.aspect = window.innerWidth / window.innerHeight;
   camera2.updateProjectionMatrix();
 
+  camera3.aspect = window.innerWidth / window.innerHeight;
+  camera3.updateProjectionMatrix();
+
   renderer.setSize( window.innerWidth / 2, window.innerHeight / 2 );
   renderer2.setSize( window.innerWidth / 2, window.innerHeight / 2 );
+  renderer3.setSize( window.innerWidth / 2, window.innerHeight / 2 );
 }
 
-var camera, camera2, scene, renderer, renderer2;
+var camera, camera2, camera3, scene, renderer, renderer2, renderer3;
 var isUserInteracting = false,
-  lon = 180, lat = 0,
+  isUserInteracting2 = false,
+  isUserInteracting3 = false,
+  lon = 0, lat = 0,
+  lon2 = 180, lat2 = 0,
+  lon3 = 90, lat3 = 0,
+
   phi = 0, theta = 0,
   phi2 = 0, theta2 = 0,
+  phi3 = 0, theta3 = 0,
+
   distance = 50,
   onPointerDownPointerX = 0,
   onPointerDownPointerY = 0,
@@ -98,13 +139,53 @@ const onDocumentMouseDown = ( event ) => {
 
 const onDocumentMouseMove = ( event ) => {
   if ( isUserInteracting === true ) {
-    lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
-    lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+    lon = ( onPointerDownPointerX - event.clientX ) * 0.3 + onPointerDownLon;
+    lat = ( event.clientY - onPointerDownPointerY ) * 0.3 + onPointerDownLat;
   }
 }
 
 const onDocumentMouseUp = () => {
   isUserInteracting = false;
+}
+
+const onDocumentMouseDown2 = ( event ) => {
+  event.preventDefault();
+  isUserInteracting2 = true;
+  onPointerDownPointerX = event.clientX;
+  onPointerDownPointerY = event.clientY;
+  onPointerDownLon = lon2;
+  onPointerDownLat = lat2;
+}
+
+const onDocumentMouseMove2 = ( event ) => {
+  if ( isUserInteracting2 === true ) {
+    lon2 = ( onPointerDownPointerX - event.clientX ) * 0.3 + onPointerDownLon;
+    lat2 = ( event.clientY - onPointerDownPointerY ) * 0.3 + onPointerDownLat;
+  }
+}
+
+const onDocumentMouseUp2 = () => {
+  isUserInteracting2 = false;
+}
+
+const onDocumentMouseDown3 = ( event ) => {
+  event.preventDefault();
+  isUserInteracting3 = true;
+  onPointerDownPointerX = event.clientX;
+  onPointerDownPointerY = event.clientY;
+  onPointerDownLon = lon3;
+  onPointerDownLat = lat3;
+}
+
+const onDocumentMouseMove3 = ( event ) => {
+  if ( isUserInteracting3 === true ) {
+    lon3 = ( onPointerDownPointerX - event.clientX ) * 0.3 + onPointerDownLon;
+    lat3 = ( event.clientY - onPointerDownPointerY ) * 0.3 + onPointerDownLat;
+  }
+}
+
+const onDocumentMouseUp3 = () => {
+  isUserInteracting3 = false;
 }
 
 document.getElementById('videoContainer').style.display = "unset";
