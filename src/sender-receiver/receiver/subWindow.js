@@ -29,3 +29,8 @@ const subWindowVrButton = document.getElementById('subWindowVrButton');
 subWindowVrButton.addEventListener('click', () => {
   window.open("sub-window/windowVr.html", "sub-window", "width=600,height=600,scrollbars=yes");
 })
+
+const subWindowVr2Button = document.getElementById('subWindowVr2Button');
+subWindowVr2Button.addEventListener('click', () => {
+  window.open("sub-window/windowVr2.html", "sub-window-2", "width=600,height=600,scrollbars=yes");
+})
