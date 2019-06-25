@@ -1,10 +1,11 @@
 'use strict';
 
 const init = () => {
-  var container, mesh, container2, container3;
+  var container, mesh, container2, container3, container4;
   container = document.getElementById( 'container' );
   container2 = document.getElementById( 'container2' );
   container3 = document.getElementById( 'container3' );
+  container4 = document.getElementById( 'container4' );
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
   camera.target = new THREE.Vector3( 0, 0, 0 );
   
@@ -13,6 +14,9 @@ const init = () => {
 
   camera3 = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
   camera3.target = new THREE.Vector3( 0, 0, 0 );
+
+  camera4 = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
+  camera4.target = new THREE.Vector3( 0, 0, 0 );
 
   scene = new THREE.Scene();
   var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
@@ -36,6 +40,10 @@ const init = () => {
   renderer3.setPixelRatio( window.devicePixelRatio );
   renderer3.setSize( window.innerWidth / 2, window.innerHeight / 2 );
 
+  renderer4 = new THREE.WebGLRenderer();
+  renderer4.setPixelRatio( window.devicePixelRatio );
+  renderer4.setSize( window.innerWidth / 2, window.innerHeight / 2 );
+
   container.appendChild( renderer.domElement );
   container.addEventListener( 'mousedown', onDocumentMouseDown, false );
   container.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -53,6 +61,12 @@ const init = () => {
   container3.addEventListener( 'mousemove', onDocumentMouseMove3, false );
   container3.addEventListener( 'mouseup', onDocumentMouseUp3, false );
   container3.addEventListener( 'mouseleave', onDocumentMouseUp3, false );
+
+  container4.appendChild( renderer4.domElement );
+  container4.addEventListener( 'mousedown', onDocumentMouseDown4, false );
+  container4.addEventListener( 'mousemove', onDocumentMouseMove4, false );
+  container4.addEventListener( 'mouseup', onDocumentMouseUp4, false );
+  container4.addEventListener( 'mouseleave', onDocumentMouseUp4, false );
 
   window.addEventListener( 'resize', onWindowResize, false );
 }
@@ -89,9 +103,19 @@ const update = () => {
   camera3.position.z = distance * Math.sin( phi3 ) * Math.sin( theta3 );
   camera3.lookAt( camera3.target );
 
+  lat4 = Math.max( - 85, Math.min( 85, lat4 ) );
+  phi4 = THREE.Math.degToRad( 90 - lat4 );
+  theta4 = THREE.Math.degToRad( lon4 );
+
+  camera4.position.x = distance * Math.sin( phi4 ) * Math.cos( theta4 );
+  camera4.position.y = distance * Math.cos( phi4 );
+  camera4.position.z = distance * Math.sin( phi4 ) * Math.sin( theta4 );
+  camera4.lookAt( camera4.target );
+
   renderer.render( scene, camera );
   renderer2.render( scene, camera2 );
   renderer3.render( scene, camera3 );
+  renderer4.render( scene, camera4 );
 
 }
 
@@ -105,22 +129,29 @@ const onWindowResize = () => {
   camera3.aspect = window.innerWidth / window.innerHeight;
   camera3.updateProjectionMatrix();
 
+  camera4.aspect = window.innerWidth / window.innerHeight;
+  camera4.updateProjectionMatrix();
+
   renderer.setSize( window.innerWidth / 2, window.innerHeight / 2 );
   renderer2.setSize( window.innerWidth / 2, window.innerHeight / 2 );
   renderer3.setSize( window.innerWidth / 2, window.innerHeight / 2 );
+  renderer4.setSize( window.innerWidth / 2, window.innerHeight / 2 );
 }
 
-var camera, camera2, camera3, scene, renderer, renderer2, renderer3;
+var camera, camera2, camera3, camera4, scene, renderer, renderer2, renderer3, renderer4;
 var isUserInteracting = false,
   isUserInteracting2 = false,
   isUserInteracting3 = false,
+  isUserInteracting4 = false,
   lon = 0, lat = 0,
   lon2 = 180, lat2 = 0,
   lon3 = 90, lat3 = 0,
+  lon4 = 270, lat4 = 0,
 
   phi = 0, theta = 0,
   phi2 = 0, theta2 = 0,
   phi3 = 0, theta3 = 0,
+  phi4 = 0, theta4 = 0,
 
   distance = 50,
   onPointerDownPointerX = 0,
@@ -186,6 +217,26 @@ const onDocumentMouseMove3 = ( event ) => {
 
 const onDocumentMouseUp3 = () => {
   isUserInteracting3 = false;
+}
+
+const onDocumentMouseDown4 = ( event ) => {
+  event.preventDefault();
+  isUserInteracting4 = true;
+  onPointerDownPointerX = event.clientX;
+  onPointerDownPointerY = event.clientY;
+  onPointerDownLon = lon4;
+  onPointerDownLat = lat4;
+}
+
+const onDocumentMouseMove4 = ( event ) => {
+  if ( isUserInteracting4 === true ) {
+    lon4 = ( onPointerDownPointerX - event.clientX ) * 0.3 + onPointerDownLon;
+    lat4 = ( event.clientY - onPointerDownPointerY ) * 0.3 + onPointerDownLat;
+  }
+}
+
+const onDocumentMouseUp4 = () => {
+  isUserInteracting4 = false;
 }
 
 document.getElementById('videoContainer').style.display = "unset";
