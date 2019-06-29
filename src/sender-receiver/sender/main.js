@@ -200,6 +200,15 @@ hogeButton.addEventListener('click', onHogeButtonClicked);
 const refreshButton = document.getElementById("refreshButton");
 refreshButton.addEventListener('click', onRefreshButtonClicked);
 
+document.getElementById('statsButton').addEventListener('click', async () => {
+  console.log("statsButton")
+  const stats = await pc.getStats();
+  console.log(stats)
+  stats.forEach(stat => {
+    console.log(stat)
+  })
+})
+
 /* --- socket listeners --- */
 socket.on('connect', () => {
   document.getElementById('socketId').innerText = socket.id;
