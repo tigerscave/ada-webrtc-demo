@@ -1,0 +1,12 @@
+div.videoContainer {
+  text-align: center;
+}
+
+img.cokpit {
+  width: 60%;
+  position: absolute;
+}
+
+video.subVideo {
+  width: 80%;
+}

@@ -3,13 +3,15 @@
   <head>
     <title>Window 3</title>
     <link rel="stylesheet" href="main.css" />
+    <script type="text/javascript" src="../../libs/three.js"></script>
   </head>
   <body>
     <h1>Window 3</h1>
     <div>
       <button id="button">BUTTON</button>
+      <button id="vrButton">VR</button>
     </div>
-    <div class="videoContainer">
+    <div id="videoContainer" class="video-container">
       <video
         id="subVideo"
         class="subVideo"
@@ -17,13 +19,19 @@
         autoplay
         muted></video>
     </div>
+    <div id="vrVideoContainers" style="display: flex">
+      <div id="container"></div>
+      <div id="container2"></div>
+    </div>
     
-    <script>
+    <script type="text/javascript">
       const button = document.getElementById('button');
       button.addEventListener('click', () => {
         const remoteVideo = window.opener.document.getElementById('remoteVideo3');
         document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
+        document.getElementById("videoContainer").style.display = 'unset';
       })
     </script>
+    <script type="text/javascript" src="./panorama.js"></script>
   </body>
 </html>
