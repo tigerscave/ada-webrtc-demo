@@ -1,12 +1,17 @@
 const express = require("express");
 const http = require("http");
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const PORT = process.env.PORT || 5355;
 const app = express();
 app.use(express.static("src"));
+const certificateOptions = {
+  key: fs.readFileSync(path.resolve('./cert/server.key')),
+  cert: fs.readFileSync(path.resolve('./cert/server.crt'))
+}
 
-const server = http.createServer(app)
+const server = https.createServer(certificateOptions, app)
 
 const io = require("socket.io")(server);
 
@@ -89,6 +94,7 @@ const main = () => {
     socket.on('refreshOffer', id => {
       handleRefreshOffer(socket, id)
     })
+
   });
 }
 
