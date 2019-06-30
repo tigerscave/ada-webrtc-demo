@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sender</title>
+    <link rel="stylesheet" href="main.css" />
+    <script src="http://192.168.10.9:5353/socket.io/socket.io.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/nipplejs@0.8.2/dist/nipplejs.min.js"
+    ></script>
+  </head>
+  <body>
+    <h1>sender</h1>
+    <div>
+      <p>Your socketId is <strong id="socketId"></strong></p>
+    </div>
+    <div>
+      <video
+        id="localVideo1"
+        playsinline
+        autoplay
+        width="300px"
+        muted></video>
+      <video
+        id="remoteVideo"
+        playsinline
+        autoplay
+        width="300px"
+        ></video>
+    </div>
+    <div>
+      <h4>user list</h4>
+      <button id="reloadButton">
+        reload
+      </button>
+      <ul id="userList">
+      </ul>
+    </div>
+    <div id="videoDevices">
+      <h4>device list</h4>
+      <ul id="deviceList">
+      </ul>
+      <div>
+        <button id="hogeButton">Send hoge</button>
+        <button id="hangUpButton">Hang Up</button>
+        <button id="refreshButton">Refresh</button>
+        <button id="statsButton">get Stats</button>
+      </div>
+      <div>
+        <button id="turnRightButton">Turn Right</button>
+        <button id="turnLeftButton">Turn Left</button>
+        <button id="positionResetButton">Position Reset</button>
+      </div>
+      <div>
+        <div id="yawStick"></div>
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
