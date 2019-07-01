@@ -1,6 +1,6 @@
 'use strict';
 
-const socket = io("http://192.168.10.9:5353");
+const socket = io("https://telp-public-server.herokuapp.com/");
 
 let localStream = null;
 let pc = null;    //peer connection
