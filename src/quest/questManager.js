@@ -198,7 +198,7 @@ const convertRightHandVerticalDeg = x => {
   }
 };
 
-AFRAME.registerComponent("oculus-go-button", {
+AFRAME.registerComponent("oculus-quest-right", {
   init: function() {
     this.el.addEventListener("trackpaddown", () => {
       enableToSend = true;
