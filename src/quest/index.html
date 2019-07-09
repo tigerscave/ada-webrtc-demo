@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quest</title>
+    <link rel="stylesheet" href="main.css" />
+    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <script src="https://telp-public-server.herokuapp.com/socket.io/socket.io.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/nipplejs@0.8.2/dist/nipplejs.min.js"
+    ></script>
+    <script src="questManager.js"></script>
+  </head>
+  <body>
+    <h1>Oculus Quest</h1>
+    <div>
+      <p>Your socketId is <strong id="socketId"></strong></p>
+    </div>
+    <div id="nonVr">
+      <div>
+        <video
+          id="localVideo1"
+          playsinline
+          autoplay
+          width="300px"
+          muted></video>
+        <video
+          id="remoteVideo"
+          class="remote-video"
+          playsinline
+          autoplay
+          width="300px"
+          ></video>
+      </div>
+      <div>
+        <h4>user list</h4>
+        <button id="reloadButton">
+          reload
+        </button>
+        <ul id="userList">
+        </ul>
+      </div>
+      <div id="videoDevices">
+        <h4>device list</h4>
+        <ul id="deviceList">
+        </ul>
+        <div>
+          <button id="switchVrButton">switch VR</button>
+          <button id="hogeButton">Send hoge</button>
+          <button id="hangUpButton">Hang Up</button>
+          <button id="refreshButton">Refresh</button>
+          <button id="statsButton">get Stats</button>
+        </div>
+        <div>
+          <button id="turnRightButton">Turn Right</button>
+          <button id="turnLeftButton">Turn Left</button>
+          <button id="positionResetButton">Position Reset</button>
+        </div>
+        <div>
+          <div id="yawStick"></div>
+          <div id="rightArmStick"></div>
+          <div id="leftArmStick"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="aSceneDiv">
+        <a-scene>
+          <a-entity camera look-controls rotation-reader>
+            <a-video
+              src="#remoteVideo"
+              width="16"
+              height="9"
+              position="0 0 -15"
+              rotation="0 0 180"
+            ></a-video>
+            <a-entity id="aEntity">
+<!--               <a-image
+                width="4.8"
+                height="2.7"
+                position="3 -2 -10"
+                src="#slideImage"
+              ></a-image> -->
+            </a-entity>
+          </a-entity>
+          <a-assets>
+            <video id="remoteVideo" controls autoplay playsinline></video>
+            <img id="slideImage" src="" crossorigin="anonymous" />
+          </a-assets>
+
+          <!-- Using the asset management system. -->
+          <a-entity
+            geometry="primitive: box"
+            material="color: red"
+            position="10 0 -25"
+          ></a-entity>
+          <a-entity laser-controls="hand: right"></a-entity>
+          <a-entity
+            oculus-go-controls="hand: right"
+            x-button-listener
+            oculus-quest-right
+          ></a-entity>
+        </a-scene>
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

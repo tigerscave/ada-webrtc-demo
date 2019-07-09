@@ -201,7 +201,7 @@ hogeButton.addEventListener('click', onHogeButtonClicked);
 const refreshButton = document.getElementById("refreshButton");
 refreshButton.addEventListener('click', onRefreshButtonClicked);
 
-let yaw = 90, pitch = 90;
+// let yaw = 90, pitch = 90;
 
 document.getElementById("positionResetButton")
 .addEventListener("click", () => {
@@ -213,18 +213,18 @@ document.getElementById("positionResetButton")
   );
 })
 
-document.getElementById("turnRightButton")
-.addEventListener("click", () => {
-  if(yaw < 160) {
-    yaw += 10;
-  }
-  sendChannel.send(
-    JSON.stringify({
-      yaw,
-      pitch: 90
-    })
-  );
-})
+// document.getElementById("turnRightButton")
+// .addEventListener("click", () => {
+//   if(yaw < 160) {
+//     yaw += 10;
+//   }
+//   sendChannel.send(
+//     JSON.stringify({
+//       yaw,
+//       pitch: 90
+//     })
+//   );
+// })
 
 document.getElementById("turnLeftButton")
 .addEventListener("click", () => {
@@ -313,47 +313,47 @@ socket.on("answerToWarpGo", description => {
   pc.addEventListener("track", handleOnTrackConnection);
 });
 
-const manager = nipplejs.create({
-  zone: document.getElementById('yawStick'),
-  mode: 'static',
-  position: {left: '50%', bottom: '10%'},
-  color: 'red'
-});
+// const manager = nipplejs.create({
+//   zone: document.getElementById('yawStick'),
+//   mode: 'static',
+//   position: {left: '50%', bottom: '10%'},
+//   color: 'red'
+// });
 
-const THRESHOLD = 5;
-let tmp_yaw = 90;
-let tmp_pitch = 90;
+// const THRESHOLD = 5;
+// let tmp_yaw = 90;
+// let tmp_pitch = 90;
 
-manager.on('move', (e, d) => {
-  const { radian } = d.angle;
-  const fixedDistance = d.distance/50 * 90;
-  yaw = parseInt(Math.cos(radian) * fixedDistance + 90);
-  console.log("yaw", yaw)
-  pitch = parseInt(Math.sin(radian) * fixedDistance + 90);
-  console.log("pitch", pitch)
-  if(Math.abs(tmp_yaw - yaw) > THRESHOLD) {
-    tmp_yaw = yaw;
-    if(sendChannel) {
-      sendChannel.send(
-        JSON.stringify({
-          yaw,
-          pitch
-        })
-      );
-    }
-  }
-  if(Math.abs(tmp_pitch - pitch) > THRESHOLD) {
-    tmp_pitch = pitch;
-    if(sendChannel) {
-      sendChannel.send(
-        JSON.stringify({
-          yaw,
-          pitch
-        })
-      );
-    }
-  }
-})
+// manager.on('move', (e, d) => {
+//   const { radian } = d.angle;
+//   const fixedDistance = d.distance/50 * 90;
+//   yaw = parseInt(Math.cos(radian) * fixedDistance + 90);
+//   console.log("yaw", yaw)
+//   pitch = parseInt(Math.sin(radian) * fixedDistance + 90);
+//   console.log("pitch", pitch)
+//   if(Math.abs(tmp_yaw - yaw) > THRESHOLD) {
+//     tmp_yaw = yaw;
+//     if(sendChannel) {
+//       sendChannel.send(
+//         JSON.stringify({
+//           yaw,
+//           pitch
+//         })
+//       );
+//     }
+//   }
+//   if(Math.abs(tmp_pitch - pitch) > THRESHOLD) {
+//     tmp_pitch = pitch;
+//     if(sendChannel) {
+//       sendChannel.send(
+//         JSON.stringify({
+//           yaw,
+//           pitch
+//         })
+//       );
+//     }
+//   }
+// })
 
 // manager.on('end', () => {
 //   yaw = 90, pitch = 90;
@@ -367,112 +367,119 @@ manager.on('move', (e, d) => {
 //   }
 // })
 
-const managerRightArm = nipplejs.create({
-  zone: document.getElementById('rightArmStick'),
-  mode: 'static',
-  position: {right: '20%', bottom: '10%'},
-  color: 'blue'
-});
+// const managerRightArm = nipplejs.create({
+//   zone: document.getElementById('rightArmStick'),
+//   mode: 'static',
+//   position: {right: '20%', bottom: '10%'},
+//   color: 'blue'
+// });
 
-const THRESHOLD_RIGHT_ARM = 5;
-let tmp_right_horizontal = 90;
-let tmp_right_vertical = 90;
-let rightHorizontal = 90, rightVertical = 90;
+// const THRESHOLD_RIGHT_ARM = 5;
+// let tmp_right_horizontal = 90;
+// let tmp_right_vertical = 90;
+// let rightHorizontal = 90, rightVertical = 90;
 
-managerRightArm.on('move', (e, d) => {
-  const { radian } = d.angle;
-  const fixedDistance = d.distance/50 * 90;
-  rightHorizontal = parseInt(Math.cos(radian) * fixedDistance + 90);
-  console.log("rightHorizontal", rightHorizontal)
-  rightVertical = parseInt(Math.sin(radian) * fixedDistance + 90);
-  console.log("rightVertical", rightVertical)
-  if(Math.abs(tmp_right_horizontal - rightHorizontal) > THRESHOLD) {
-    tmp_right_horizontal = rightHorizontal;
-    if(sendChannel) {
-      sendChannel.send(
-        JSON.stringify({
-          rightHandHorizontal: rightHorizontal,
-          rightHandVertical: rightVertical
-        })
-      );
-    }
-  }
-  if(Math.abs(tmp_right_vertical - rightVertical) > THRESHOLD) {
-    tmp_right_vertical = rightVertical;
-    if(sendChannel) {
-      sendChannel.send(
-        JSON.stringify({
-          rightHandHorizontal: rightHorizontal,
-          rightHandVertical: rightVertical
-        })
-      );
-    }
-  }
-})
+// managerRightArm.on('move', (e, d) => {
+//   const { radian } = d.angle;
+//   const fixedDistance = d.distance/50 * 90;
+//   rightHorizontal = parseInt(Math.cos(radian) * fixedDistance + 90);
+//   console.log("rightHorizontal", rightHorizontal)
+//   rightVertical = parseInt(Math.sin(radian) * fixedDistance + 90);
+//   console.log("rightVertical", rightVertical)
+//   if(Math.abs(tmp_right_horizontal - rightHorizontal) > THRESHOLD) {
+//     tmp_right_horizontal = rightHorizontal;
+//     if(sendChannel) {
+//       sendChannel.send(
+//         JSON.stringify({
+//           rightHandHorizontal: rightHorizontal,
+//           rightHandVertical: rightVertical
+//         })
+//       );
+//     }
+//   }
+//   if(Math.abs(tmp_right_vertical - rightVertical) > THRESHOLD) {
+//     tmp_right_vertical = rightVertical;
+//     if(sendChannel) {
+//       sendChannel.send(
+//         JSON.stringify({
+//           rightHandHorizontal: rightHorizontal,
+//           rightHandVertical: rightVertical
+//         })
+//       );
+//     }
+//   }
+// })
 
-managerRightArm.on('end', () => {
-  yaw = 90, pitch = 90;
-  if(sendChannel) {
-    sendChannel.send(
-      JSON.stringify({
-        rightHandHorizontal: 90,
-        rightHandVertical: 90
-      })
-    );
-  }
-})
+// managerRightArm.on('end', () => {
+//   yaw = 90, pitch = 90;
+//   if(sendChannel) {
+//     sendChannel.send(
+//       JSON.stringify({
+//         rightHandHorizontal: 90,
+//         rightHandVertical: 90
+//       })
+//     );
+//   }
+// })
 
-const managerLeftArm = nipplejs.create({
-  zone: document.getElementById('leftArmStick'),
-  mode: 'static',
-  position: {left: '20%', bottom: '10%'},
-  color: 'green'
-});
+// const managerLeftArm = nipplejs.create({
+//   zone: document.getElementById('leftArmStick'),
+//   mode: 'static',
+//   position: {left: '20%', bottom: '10%'},
+//   color: 'green'
+// });
 
-const THRESHOLD_RIGHT_LEFT = 5;
-let tmp_left_horizontal = 90;
-let tmp_left_vertical = 90;
-let leftHorizontal = 90, leftVertical = 90;
+// const THRESHOLD_RIGHT_LEFT = 5;
+// let tmp_left_horizontal = 90;
+// let tmp_left_vertical = 90;
+// let leftHorizontal = 90, leftVertical = 90;
 
-managerLeftArm.on('move', (e, d) => {
-  const { radian } = d.angle;
-  const fixedDistance = d.distance/50 * 90;
-  leftHorizontal = parseInt(Math.cos(radian) * fixedDistance + 90);
-  console.log("leftHorizontal", leftHorizontal)
-  leftVertical = parseInt(Math.sin(radian) * fixedDistance + 90);
-  console.log("leftVertical", leftVertical)
-  if(Math.abs(tmp_left_horizontal - leftHorizontal) > THRESHOLD) {
-    tmp_left_horizontal = leftHorizontal;
-    if(sendChannel) {
-      sendChannel.send(
-        JSON.stringify({
-          leftHandHorizontal: leftHorizontal,
-          leftHandVertical: 180 - leftVertical
-        })
-      );
-    }
-  }
-  if(Math.abs(tmp_left_vertical - leftVertical) > THRESHOLD) {
-    tmp_left_vertical = leftVertical;
-    if(sendChannel) {
-      sendChannel.send(
-        JSON.stringify({
-          leftHandHorizontal: leftHorizontal,
-          leftHandVertical: 180 - leftVertical
-        })
-      );
-    }
-  }
-})
+// managerLeftArm.on('move', (e, d) => {
+//   const { radian } = d.angle;
+//   const fixedDistance = d.distance/50 * 90;
+//   leftHorizontal = parseInt(Math.cos(radian) * fixedDistance + 90);
+//   console.log("leftHorizontal", leftHorizontal)
+//   leftVertical = parseInt(Math.sin(radian) * fixedDistance + 90);
+//   console.log("leftVertical", leftVertical)
+//   if(Math.abs(tmp_left_horizontal - leftHorizontal) > THRESHOLD) {
+//     tmp_left_horizontal = leftHorizontal;
+//     if(sendChannel) {
+//       sendChannel.send(
+//         JSON.stringify({
+//           leftHandHorizontal: leftHorizontal,
+//           leftHandVertical: 180 - leftVertical
+//         })
+//       );
+//     }
+//   }
+//   if(Math.abs(tmp_left_vertical - leftVertical) > THRESHOLD) {
+//     tmp_left_vertical = leftVertical;
+//     if(sendChannel) {
+//       sendChannel.send(
+//         JSON.stringify({
+//           leftHandHorizontal: leftHorizontal,
+//           leftHandVertical: 180 - leftVertical
+//         })
+//       );
+//     }
+//   }
+// })
 
-managerLeftArm.on('end', () => {
-  yaw = 90, pitch = 90;
-  if(sendChannel) {
-    sendChannel.send(
-      JSON.stringify({
-        leftHandHorizontal: 90,
-        leftHandVertical: 90
-      })
-    );
-  }
+// managerLeftArm.on('end', () => {
+//   yaw = 90, pitch = 90;
+//   if(sendChannel) {
+//     sendChannel.send(
+//       JSON.stringify({
+//         leftHandHorizontal: 90,
+//         leftHandVertical: 90
+//       })
+//     );
+//   }
+// })
+
+document.getElementById("aSceneDiv").style.display = "none";
+
+document.getElementById("switchVrButton").addEventListener("click", () => {
+  document.getElementById("aSceneDiv").style.display = "unset";
+  document.getElementById("nonVr").style.display = "none";
 })
