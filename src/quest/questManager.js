@@ -10,6 +10,12 @@ const RIGHT_HAND_HORIZONTAL_MAX = 150;
 const RIGHT_HAND_VERTICAL_MIN = 30;
 const RIGHT_HAND_VERTICAL_MAX = 120;
 
+const LEFT_HAND_HORIZONTAL_MIN = 50;
+const LEFT_HAND_HORIZONTAL_MAX = 150;
+
+const LEFT_HAND_VERTICAL_MIN = 30;
+const LEFT_HAND_VERTICAL_MAX = 120;
+
 const THRESHOLD = 0;
 
 let pitch = 90;
@@ -74,7 +80,7 @@ AFRAME.registerComponent("rotation-reader", {
     const tmp_yaw = convertYawForManipulator(degRotation.y, 0);
     const tmp_pitch = convertPitchForManipulator(degRotation.x, 0);
 
-    if (tmp_yaw - yaw > THRESHOLD) {
+    if (Math.abs(tmp_yaw - yaw) > THRESHOLD) {
       yaw = tmp_yaw;
       pitch = tmp_pitch;
 
@@ -84,7 +90,7 @@ AFRAME.registerComponent("rotation-reader", {
       }
     }
 
-    if (tmp_pitch - pitch > THRESHOLD) {
+    if (Math.abs(tmp_pitch - pitch) > THRESHOLD) {
       yaw = tmp_yaw;
       pitch = tmp_pitch;
 
@@ -199,16 +205,6 @@ const convertRightHandVerticalDeg = x => {
 };
 
 AFRAME.registerComponent("oculus-quest-right", {
-  init: function() {
-    this.el.addEventListener("trackpaddown", () => {
-      enableToSend = true;
-      sendSlideImage(true);
-    });
-
-    this.el.addEventListener("triggerdown", () => {
-      sendSlideImage(false);
-    });
-  },
   tick: function() {
     const { rotation, position } = this.el.object3D;
     const degRotation = {
@@ -225,8 +221,8 @@ AFRAME.registerComponent("oculus-quest-right", {
       const rightHandVertical = convertRightHandVerticalDeg(degRotation.x);
 
       if (
-        rightHandHorizontal !== tmp_rightHandHorizontal &&
-        rightHandVertical !== tmp_rightHandVertical
+        Math.abs(rightHandHorizontal - tmp_rightHandHorizontal) > 0 &&
+        Math.abs(rightHandVertical - tmp_rightHandVertical) > 0
       ) {
         sendChannel.send(
           JSON.stringify({
@@ -234,9 +230,64 @@ AFRAME.registerComponent("oculus-quest-right", {
             rightHandVertical
           })
         );
-        tmp_rightHandHorizontal = rightHandHorizontal;
-        tmp_rightHandVertical = rightHandVertical;
       }
+      tmp_rightHandHorizontal = rightHandHorizontal;
+      tmp_rightHandVertical = rightHandVertical;
+    }
+  }
+});
+
+const convertLeftHandHorizontalDeg = y => {
+  const convertedDeg = y + 90;
+  if (convertedDeg > LEFT_HAND_HORIZONTAL_MAX) {
+    return LEFT_HAND_HORIZONTAL_MAX;
+  } else if (convertedDeg < LEFT_HAND_HORIZONTAL_MIN) {
+    return LEFT_HAND_HORIZONTAL_MIN;
+  } else {
+    return convertedDeg;
+  }
+};
+
+const convertLeftHandVerticalDeg = x => {
+  const convertedDeg = x + 30;
+  if (convertedDeg > LEFT_HAND_VERTICAL_MAX) {
+    return LEFT_HAND_VERTICAL_MAX;
+  } else if (convertedDeg < LEFT_HAND_VERTICAL_MIN) {
+    return LEFT_HAND_VERTICAL_MIN;
+  } else {
+    return convertedDeg;
+  }
+};
+
+AFRAME.registerComponent("oculus-quest-left", {
+  tick: function() {
+    const { rotation, position } = this.el.object3D;
+    const degRotation = {
+      x: parseInt(THREE.Math.radToDeg(rotation._x)),
+      y: parseInt(THREE.Math.radToDeg(rotation._y)),
+      z: parseInt(THREE.Math.radToDeg(rotation._z))
+    };
+
+    let tmp_leftHandHorizontal = 90;
+    let tmp_leftHandVertical = 90;
+
+    if (sendChannel && enableToSend) {
+      const leftHandHorizontal = convertLeftHandHorizontalDeg(degRotation.y);
+      const leftHandVertical = convertLeftHandVerticalDeg(degRotation.x);
+
+      if (
+        Math.abs(leftHandHorizontal - tmp_leftHandHorizontal) > THRESHOLD &&
+        Math.abs(leftHandVertical - tmp_leftHandVertical) > THRESHOLD
+      ) {
+        sendChannel.send(
+          JSON.stringify({
+            leftHandHorizontal: 180 - leftHandHorizontal,
+            leftHandVertical: 180 - leftHandVertical
+          })
+        );
+      }
+      tmp_leftHandHorizontal = leftHandHorizontal;
+      tmp_leftHandVertical = leftHandVertical;
     }
   }
 });
