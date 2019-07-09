@@ -174,7 +174,7 @@ document.onkeydown = e => {
   }
 };
 
-let enableToSend = false;
+let enableToSend = true;
 
 const convertRightHandHorizontalDeg = y => {
   const convertedDeg = y + 90;
