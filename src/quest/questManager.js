@@ -204,6 +204,9 @@ const convertRightHandVerticalDeg = x => {
   }
 };
 
+let tmp_rightHandHorizontal = 90;
+let tmp_rightHandVertical = 90;
+
 AFRAME.registerComponent("oculus-quest-right", {
   tick: function() {
     const { rotation, position } = this.el.object3D;
@@ -212,9 +215,6 @@ AFRAME.registerComponent("oculus-quest-right", {
       y: parseInt(THREE.Math.radToDeg(rotation._y)),
       z: parseInt(THREE.Math.radToDeg(rotation._z))
     };
-
-    let tmp_rightHandHorizontal = 90;
-    let tmp_rightHandVertical = 90;
 
     if (sendChannel && enableToSend) {
       const rightHandHorizontal = convertRightHandHorizontalDeg(degRotation.y);
@@ -230,9 +230,9 @@ AFRAME.registerComponent("oculus-quest-right", {
             rightHandVertical
           })
         );
+        tmp_rightHandHorizontal = rightHandHorizontal;
+        tmp_rightHandVertical = rightHandVertical;
       }
-      tmp_rightHandHorizontal = rightHandHorizontal;
-      tmp_rightHandVertical = rightHandVertical;
     }
   }
 });
@@ -259,6 +259,9 @@ const convertLeftHandVerticalDeg = x => {
   }
 };
 
+let tmp_leftHandHorizontal = 90;
+let tmp_leftHandVertical = 90;
+
 AFRAME.registerComponent("oculus-quest-left", {
   tick: function() {
     const { rotation, position } = this.el.object3D;
@@ -267,9 +270,6 @@ AFRAME.registerComponent("oculus-quest-left", {
       y: parseInt(THREE.Math.radToDeg(rotation._y)),
       z: parseInt(THREE.Math.radToDeg(rotation._z))
     };
-
-    let tmp_leftHandHorizontal = 90;
-    let tmp_leftHandVertical = 90;
 
     if (sendChannel && enableToSend) {
       const leftHandHorizontal = convertLeftHandHorizontalDeg(degRotation.y);
@@ -285,9 +285,9 @@ AFRAME.registerComponent("oculus-quest-left", {
             leftHandVertical: 180 - leftHandVertical
           })
         );
+        tmp_leftHandHorizontal = leftHandHorizontal;
+        tmp_leftHandVertical = leftHandVertical;
       }
-      tmp_leftHandHorizontal = leftHandHorizontal;
-      tmp_leftHandVertical = leftHandVertical;
     }
   }
 });
