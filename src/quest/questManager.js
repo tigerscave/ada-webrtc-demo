@@ -188,7 +188,7 @@ const convertRightHandHorizontalDeg = y => {
 };
 
 const convertRightHandVerticalDeg = x => {
-  const convertedDeg = x + 90;
+  const convertedDeg = x + 30;
   if (convertedDeg > RIGHT_HAND_VERTICAL_MAX) {
     return RIGHT_HAND_VERTICAL_MAX;
   } else if (convertedDeg < RIGHT_HAND_VERTICAL_MIN) {
@@ -210,8 +210,7 @@ AFRAME.registerComponent("oculus-quest-right", {
     });
   },
   tick: function() {
-    const { rotation } = this.el.object3D;
-
+    const { rotation, position } = this.el.object3D;
     const degRotation = {
       x: parseInt(THREE.Math.radToDeg(rotation._x)),
       y: parseInt(THREE.Math.radToDeg(rotation._y)),
@@ -225,8 +224,6 @@ AFRAME.registerComponent("oculus-quest-right", {
       const rightHandHorizontal = convertRightHandHorizontalDeg(degRotation.y);
       const rightHandVertical = convertRightHandVerticalDeg(degRotation.x);
 
-      console.log("rightHandHorizontal", rightHandHorizontal);
-      console.log("rightHandVertical", rightHandVertical);
       if (
         rightHandHorizontal !== tmp_rightHandHorizontal &&
         rightHandVertical !== tmp_rightHandVertical
