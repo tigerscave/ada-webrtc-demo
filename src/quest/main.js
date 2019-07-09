@@ -74,9 +74,8 @@ const onStreamVideoButtonClicked = (deviceId, index) => {
   navigator.mediaDevices.getUserMedia(
     {
       audio: true,
-      video: {
-        deviceId,
-      }}
+      video: false
+    }
   )
   .then((mediaStream) => gotLocalVideoStream(mediaStream, videoEl))
 }
