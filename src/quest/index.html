@@ -88,17 +88,17 @@
             <img id="slideImage" src="" crossorigin="anonymous" />
           </a-assets>
 
-          <!-- Using the asset management system. -->
-          <a-entity
-            geometry="primitive: box"
-            material="color: red"
-            position="10 0 -25"
-          ></a-entity>
           <a-entity laser-controls="hand: right"></a-entity>
           <a-entity
             oculus-go-controls="hand: right"
             x-button-listener
             oculus-quest-right
+          ></a-entity>
+          <a-entity laser-controls="hand: left"></a-entity>
+          <a-entity
+            oculus-go-controls="hand: left"
+            x-button-listener
+            oculus-quest-left
           ></a-entity>
         </a-scene>
       </div>

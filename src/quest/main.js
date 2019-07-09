@@ -92,7 +92,7 @@ const displayDeviceList = devices => {
 
     // add call button to each user
     const buttonNode = document.createElement("BUTTON");
-    buttonNode.appendChild(document.createTextNode("STREAM VIDEO"));
+    buttonNode.appendChild(document.createTextNode("STREAM AUDIO"));
     buttonNode.value = device.deviceId;
     buttonNode.addEventListener("click", () => onStreamVideoButtonClicked(device.deviceId, index));
     listNode.appendChild(buttonNode);
@@ -107,7 +107,7 @@ const loadVideoDevices = () => {
   .then((devices) => {
     console.log(devices)
     devices.forEach((device) => {
-      if(device.kind === 'videoinput') {
+      if(device.kind === 'audioinput') {
         videoDevices.push(device);
       }
     })
