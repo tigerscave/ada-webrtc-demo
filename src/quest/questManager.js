@@ -211,7 +211,6 @@ AFRAME.registerComponent("oculus-quest-right", {
   },
   tick: function() {
     const { rotation } = this.el.object3D;
-    console.log(rotation)
 
     const degRotation = {
       x: parseInt(THREE.Math.radToDeg(rotation._x)),
@@ -226,6 +225,8 @@ AFRAME.registerComponent("oculus-quest-right", {
       const rightHandHorizontal = convertRightHandHorizontalDeg(degRotation.y);
       const rightHandVertical = convertRightHandVerticalDeg(degRotation.x);
 
+      console.log("rightHandHorizontal", rightHandHorizontal);
+      console.log("rightHandVertical", rightHandVertical);
       if (
         rightHandHorizontal !== tmp_rightHandHorizontal &&
         rightHandVertical !== tmp_rightHandVertical
