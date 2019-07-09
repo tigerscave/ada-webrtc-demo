@@ -211,6 +211,7 @@ AFRAME.registerComponent("oculus-quest-right", {
   },
   tick: function() {
     const { rotation } = this.el.object3D;
+    console.log(rotation)
 
     const degRotation = {
       x: parseInt(THREE.Math.radToDeg(rotation._x)),
