@@ -1,0 +1,7 @@
+.list-item {
+  display: flex;
+}
+
+ul {
+  padding-left: 0;
+}

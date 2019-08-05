@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VR Window 1</title>
+    <link rel="stylesheet" href="main.css" />
+    <script type="text/javascript" src="../../sender-receiver/libs/three.js"></script>
+  </head>
+  <body>
+    <div>
+      <button id="button">get Video</button>
+      <button id="vrButton">VR Mode</button>
+    </div>
+    <div id="videoContainer" class="video-container">
+      <video
+        id="subVideo"
+        class="subVideo"
+        playsinline
+        autoplay
+        muted></video>
+    </div>
+    <div id="vrVideoContainers">
+      <div style="display: flex">
+        <div id="container"></div>
+        <div id="container2"></div>
+      </div>
+      <div style="display: flex">
+        <div id="container3"></div>
+        <div id="container4"></div>
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+      const button = document.getElementById('button');
+      button.addEventListener('click', () => {
+        const remoteVideo = window.opener.document.getElementById('video');
+        document.getElementById('subVideo').srcObject = remoteVideo.srcObject;
+        document.getElementById("videoContainer").style.display = 'unset';
+      })
+    </script>
+    <script type="text/javascript" src="./panorama.js"></script>
+  </body>
+</html>
