@@ -24,7 +24,12 @@ videoButton.addEventListener("click", onVideoButtonClicked);
 
 const subWindowVr1Button = document.getElementById('subWindowVr1Button');
 subWindowVr1Button.addEventListener('click', () => {
-  window.open("sub-window/vr-window1.html", "sub-window", "width=600,height=600,scrollbars=yes");
+  window.open("sub-window/vr-window1.html", "sub-window1", "width=600,height=600,scrollbars=yes");
+})
+
+const subWindowVr2Button = document.getElementById('subWindowVr2Button');
+subWindowVr2Button.addEventListener('click', () => {
+  window.open("sub-window/vr-window2.html", "sub-window2", "width=600,height=600,scrollbars=yes");
 })
 
 document.getElementById('getResolutionButton')
